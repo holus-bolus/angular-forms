@@ -4,36 +4,62 @@
     <div class="form-control">
       <label>Email</label>
       <input type="text" placeholder="Email" formControlName="email">
-      <div class="validation"></div>
+      <div
+        *ngIf="form.get('email') && form.get('email').touched"
+        class="validation">
+        <small *ngIf="form.get('email').errors['required']">
+          The email field cannot be empty
+        </small>
+        <small>Enter the correct email</small>
+      </div>
     </div>
     <div class="form-control">
       <label>Password</label>
       <input type="password" placeholder="Password" formControlName="password">
-      <div class="validation"></div>
+      <div
+        *ngIf="form.get('password').errors['required']"
+        class="validation">
+        <small>
+          The password field cannot be empty
+        </small>
+        <!--        <small-->
+        <!--        *ngIf="form.get('password').errors['minlength']"-->
+        <!--        >The password length should be at least {{form.get('password').errors['minlength'].requiredlength}}.-->
+        <!--          Now the password length is  {{form.get('password').errors['minlength'].actuallength}} .-->
+        <!--        </small>-->
+        <!--                <small-->
+        <!--                *ngIf="form.get('password').errors['minlength']"-->
+        <!--                >The password length should be at least {{form.get('password').errors['minlength'].requiredLength}}.-->
+        <!--                  Now the password length is  {{form.get('password').errors['minlength'].actualLength}} .-->
+        <!--                </small>-->
+      </div>
     </div>
-    <div class="card">
+    <div class="card" formGroupName="address">
       <h2>Address</h2>
       <div class="form-control">
         <label>Country</label>
-        <select>
+        <select formControlName="country">
           <option value="nl">Netherlands</option>
           <option value="de">Deutschland</option>
           <option value="dm">Denmark</option>
         </select>
       </div>
       <div class="from-control">
-        <input type="text">
+        <input type="text" formControlName="city" placeholder="city">
       </div>
-      <button class="btn btn-primary" type="button">Choose a capital</button>
+      <button class="btn btn-primary" type="button" (click)="setCapital()">
+        Choose a capital
+      </button>
     </div>
-    <div class="card">
+    <div class="card" formGroupName="skills">
       <h2>Your skills</h2>
-      <button class="btn" type="button">Add a skill</button>
-      <div class="form-control">
-        <label></label>
-        <input type="text">
+      <button class="btn" type="button" (click)="addASkill()">Add a skill</button>
+      <div class="form-control"
+           *ngFor="let control of form.get('skills')['controls'] let idx=index">
+        <label> Skill {{idx+1}}</label>
+        <input type="text" [formControlName]="idx">
       </div>
     </div>
-    <button class="btn btn-primary" type="submit">Send</button>
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Send</button>
   </form>
 </div>
